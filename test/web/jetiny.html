@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <script type="text/javascript" src="../../dist/jetiny.min.js"></script>
+    <script type="text/javascript" src="./config.js"></script>
+    <script type="text/javascript">
+        
+        jet.config({
+            debug: {
+                min: true,
+                i18n: true,
+                tmpl: true,
+            },
+            tmpl:{
+                extension: 'html',
+                debug: true
+            }
+        });
+        
+        //jet.tr.local='zh-CN';
+        
+        jet.on('progress', function(current, totle){
+            console.log('progress:', current, totle);
+        });
+        
+        if (document.querySelector )
+            jet.use(['nprogress','nprogress@css'], function(NProgress){
+                jet.on('progress', function(current, totle){
+                    NProgress.set(current/ totle);
+                });
+            });
+        
+        jet.use(['bootstrap@css', '../fixtures/node_loader/test.css']);
+    </script>
+</head>
+<body>
+    <script type="text/javascript">
+        jet.use('jquery', function($){
+            var prev = jet.bridge('route', function(req){
+                prev(req);
+                if (req.pjax) {
+                    req.send(function(err, data) {
+                        if (err) {
+                            console.error('route pjax error:', err);
+                            return ;
+                        }
+                        var $el = $(data),
+                            $scripts;
+                        
+                        if (!$el.is('.pjax-page')) {
+                            var $container = $el.find('.pjax-page');
+                            if ($container)
+                                $el = $container;
+                        }
+                        $scripts = $el.find('script').filter(function(i){
+                            var $type = $(this).attr('type');
+                            if ($type === "" || $type === 'text/javascript') {
+                                var text = $(this).text();
+                                if (jet.config('debug')) {
+                                    text += '\r\n //# sourceURL=' + req.request.url + '##' + i;
+                                }
+                                $(this).text(text);
+                                return this;
+                            }
+                        });
+                        $('.page-container').empty().append($el);
+                    });
+                } else if (req.use) {
+                    req.send(function(handle) {
+                        if (!handle) {
+                            console.error('route use error:', req.use);
+                            return ;
+                        }
+                        handle.render(req);
+                    });
+                } else {
+                    // req without route;
+                }
+            });
+            jet.bootstrap({
+                routers: {
+                    '/': {
+                        id: 'home',
+                        pjax: './pjax/pjax_home.html'
+                    },
+                    '/about': {
+                        id: 'about',
+                        pjax: './pjax/pjax_about.html'
+                    },
+                    '/account': {
+                        id: 'account',
+                        use: './use/use_account.js'
+                    },
+                    '/article/:id': {
+                        id: 'article',
+                        use: './use/use_article.js'
+                    }
+                }
+            });
+        });
+    </script>
+    
+    <div>
+        <a href="#!/">Home</a>
+        <a href="#!/about">About</a>
+        <a href="#!/account">Account</a>
+        <a href="#!/article/1">Article 1</a>
+    </div>
+
+    <div class="page-container">
+        
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "name": "defjs",
+  "version": "1.0.1",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/jetiny/defjs"
+  },
+  "author": "jetiny<jetiny8@gmail.com>",
+  "license": "MIT",
+  "authors": [
+    "jetiny <jetiny8@gmail.com>"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "closure-compiler": "http://dl.google.com/closure-compiler/compiler-latest.zip"
+  }
+}

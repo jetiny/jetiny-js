@@ -1,0 +1,22 @@
+{
+  "name": "test_node",
+  "version": "0.0.0",
+  "authors": [
+    "jetiny <jetiny8@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap-tagsinput": "~0.4.2",
+    "bootstrap": "~3.3.2",
+    "font-awesome": "~4.3.0",
+    "nprogress": "~0.1.6",
+    "jquery": "~1.11.1"
+  }
+}

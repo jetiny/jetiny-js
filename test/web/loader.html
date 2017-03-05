@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <script type="text/javascript" src="../../dist/jetiny.js"></script>
+    <script type="text/javascript" src="./config.js"></script>
+    <script type="text/javascript">
+        
+        jet.config({
+            debug: {
+                min: true,
+                i18n: true,
+                tmpl: true,
+            },
+            tmpl:{
+                extension: 'html',
+                debug: true
+            }
+        });
+        
+        //jet.tr.local='zh-CN';
+        
+        jet.on('progress', function(current, totle){
+            console.log('progress:', current, totle);
+        })
+        
+        document.querySelector && jet.use(['nprogress','nprogress@css'], function(NProgress){
+            jet.on('progress', function(current, totle){
+                NProgress.set(current/ totle);
+            })
+        });
+        
+        jet.use(['bootstrap@css', '../fixtures/node_loader/test.css']);
+    </script>
+</head>
+<body>
+    <script type="text/javascript">
+    
+        function load_modules(){
+            // return;
+            jet.use([
+                'jquery'
+                ,'bootstrap'
+            ], function(){
+                console.log('bootstrap loaded.');
+            });
+            
+            jet.use('../fixtures/local/[i18n].json', function(){
+                console.log('title', jet.tr('title'));
+            });
+            
+            jet.use([
+                'jquery',
+                '../fixtures/node_loader/test.json',
+                '../fixtures/local/[i18n].js',
+                '../fixtures/node_loader/test_amd.js',
+                '../fixtures/node_loader/test_cmd.js',
+                '../fixtures/node_loader/test.js'
+                ], function(){
+                console.log(arguments); 
+                document.title = jet.tr('title');
+                
+                jet.on('translate', function(){
+                    document.title = jet.tr('title');
+                });
+                
+                $(change_local).click(function(){
+                    jet.tr.setLocal('zh-CN');
+                });
+            });
+            
+            jet.use('../fixtures/node_loader/test.[tmpl]', function(f){
+                console.log('tmpl:', f({title: jet.tr('title')}))
+            })
+        }
+        
+        if (1) {
+            window.onload = function(){//200 from cache
+                setTimeout(load_modules)
+            }
+        } else { // 304
+            load_modules();
+        }
+    </script>
+    <button id="change_local">change local to zh-CN</button>
+</body>
+</html>

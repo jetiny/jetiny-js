@@ -1,0 +1,26 @@
+{
+  "name": "defjs",
+  "version": "1.0.1",
+  "description": "",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/jetiny/defjs"
+  },
+  "keywords": [],
+  "scripts": {},
+  "author": "jetiny<jetiny8@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^3.8.11",
+    "gulp-closure-compiler": "^0.2.19",
+    "gulp-concat": "^2.5.2",
+    "gulp-copy": "0.0.2",
+    "gulp-shell": "^0.4.0",
+    "gulp-webpack": "^1.3.2",
+    "webpack": "^1.8.5"
+  },
+  "dependencies": {
+    "fastparse": "^1.0.0"
+  }
+}
